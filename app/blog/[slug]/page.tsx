@@ -3,10 +3,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { getPostBySlug, getAllPosts } from '../../../lib/posts';
 import MarkdownRenderer from '../../../components/MarkdownRenderer';
+import AdBanner from '../../../components/AdBanner';
 import { ChevronLeft, Share2, User, Clock, Calendar } from 'lucide-react';
 import { TocItem } from '../../../types';
 
-// Helper to extract headings for Table of Contents
 const extractHeadings = (markdown: string): TocItem[] => {
     const headingRegex = /^(#{2,3})\s+(.*)$/gm;
     let match;
@@ -14,7 +14,7 @@ const extractHeadings = (markdown: string): TocItem[] => {
     let idCounter = 0;
 
     while ((match = headingRegex.exec(markdown)) !== null) {
-        const level = match[1].length; // 2 or 3
+        const level = match[1].length; 
         const text = match[2];
         const id = `heading-${idCounter++}`;
         headings.push({ id, text, level });
@@ -22,7 +22,6 @@ const extractHeadings = (markdown: string): TocItem[] => {
     return headings;
 };
 
-// Estimate read time
 const calculateReadTime = (content: string): string => {
     const wordsPerMinute = 200;
     const words = content.trim().split(/\s+/).length;
@@ -30,7 +29,6 @@ const calculateReadTime = (content: string): string => {
     return `${time} min read`;
 };
 
-// Generate static params for all posts at build time
 export async function generateStaticParams() {
   const posts = getAllPosts();
   return posts.map((post) => ({
@@ -38,12 +36,9 @@ export async function generateStaticParams() {
   }));
 }
 
-// Define Params type to be compatible with Next.js 15+ (Promise) or 14 (Object)
 type Params = Promise<{ slug: string }> | { slug: string };
 
 export default async function BlogPostPage({ params }: { params: Params }) {
-  // CRITICAL FIX: Await params before accessing properties.
-  // This resolves the "Digest: 769976000" error in Next.js 15+.
   const resolvedParams = await params;
   const { slug } = resolvedParams;
   
@@ -116,6 +111,9 @@ export default async function BlogPostPage({ params }: { params: Params }) {
                     <div className="p-8 md:p-12 rounded-2xl bg-slate-900/30 border border-slate-800/50 backdrop-blur-md shadow-xl transition-all hover:bg-slate-900/40">
                         <MarkdownRenderer content={post.content} />
 
+                        {/* Article Bottom Ad */}
+                        <AdBanner />
+
                         {/* Share & Author Footer */}
                         <div className="mt-16 pt-8 border-t border-slate-800/50">
                             <div className="flex items-center justify-between">
@@ -133,7 +131,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
                 {/* Sidebar (TOC) */}
                 <aside className="hidden lg:block lg:w-1/3 pt-12 opacity-0 animate-fade-in-right" style={{ animationDelay: '800ms' }}>
                     <div className="sticky top-24 space-y-8">
-                        {/* Table of Contents - Glassmorphism */}
+                        {/* Table of Contents */}
                         <div className="p-6 rounded-2xl bg-slate-900/50 border border-slate-800/50 shadow-xl backdrop-blur-md transition-all hover:border-emerald-500/20">
                             <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2 font-display">
                                 Table of Contents
@@ -142,11 +140,6 @@ export default async function BlogPostPage({ params }: { params: Params }) {
                                 <ul className="space-y-3 relative border-l border-slate-700/50 ml-2">
                                     {toc.length > 0 ? toc.map((item, index) => (
                                         <li key={index} style={{ paddingLeft: `${(item.level - 1) * 16}px` }} className="relative group">
-                                            {/* 
-                                              CRITICAL FIX: 
-                                              Using <span> instead of <a> because we cannot pass `onClick` 
-                                              (e.preventDefault) in a Server Component.
-                                            */}
                                             <span 
                                                 className={`text-sm block transition-all py-1 font-serif cursor-default ${index === 0 ? 'text-emerald-400 font-bold' : 'text-slate-400 group-hover:text-emerald-400 group-hover:translate-x-1'}`}
                                             >
@@ -160,7 +153,10 @@ export default async function BlogPostPage({ params }: { params: Params }) {
                             </nav>
                         </div>
 
-                        {/* CTA Box - Glassmorphism */}
+                        {/* Sidebar Ad Placement */}
+                        <AdBanner format="rectangle" />
+
+                        {/* CTA Box */}
                         <div className="p-6 rounded-2xl bg-gradient-to-br from-emerald-950/80 to-slate-900/80 border border-emerald-900/50 shadow-lg backdrop-blur-md group hover:shadow-emerald-900/20 transition-all">
                             <h4 className="font-bold text-white mb-2 font-display">Need Gear?</h4>
                             <p className="text-sm text-slate-400 mb-4 leading-relaxed font-serif">

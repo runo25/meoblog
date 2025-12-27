@@ -1,5 +1,4 @@
 import React from 'react';
-// import './globals.css'; // REMOVED to prevent build errors
 import type { Metadata } from 'next';
 import { Inter, Merriweather, Playfair_Display } from 'next/font/google';
 import Navbar from '../components/Navbar';
@@ -22,10 +21,18 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* Google AdSense */}
+        <meta name="google-adsense-account" content="ca-pub-8785007089566353" />
+        <script 
+          async 
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8785007089566353"
+          crossOrigin="anonymous"
+        ></script>
+
         {/* Tailwind CSS CDN */}
         <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
         
-        {/* Custom CSS (Moved from globals.css) */}
+        {/* Custom CSS */}
         <style dangerouslySetInnerHTML={{ __html: `
           .bg-noise {
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
@@ -99,7 +106,7 @@ export default function RootLayout({
           }
         `}} />
       </head>
-      <body className={`${inter.variable} ${merriweather.variable} ${playfair.variable} text-slate-200 antialiased overflow-x-hidden bg-slate-950`}>
+      <body className={`${inter.variable} ${merriweather.variable} ${playfair.variable} text-slate-200 antialiased overflow-x-hidden bg-slate-950 flex flex-col min-h-screen`}>
         <div className="fixed inset-0 -z-50 w-full h-full bg-slate-950 overflow-hidden">
              {/* Gradient Orbs */}
             <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-emerald-600/20 blur-[100px] animate-blob mix-blend-screen" />
@@ -110,7 +117,7 @@ export default function RootLayout({
         </div>
         
         <Navbar />
-        <main className="flex-grow min-h-screen relative z-10 flex flex-col">
+        <main className="flex-grow relative z-10 flex flex-col">
           {children}
         </main>
         <Footer />
