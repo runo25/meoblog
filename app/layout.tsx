@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Metadata } from 'next';
 import { Inter, Merriweather, Playfair_Display } from 'next/font/google';
+import Script from 'next/script';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
@@ -11,6 +12,9 @@ const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-playfa
 export const metadata: Metadata = {
   title: 'ZeroTech Security',
   description: 'Minimalist, content-first static blog engine for smart home security guides.',
+  other: {
+    'google-adsense-account': 'ca-pub-8785007089566353',
+  },
 };
 
 export default function RootLayout({
@@ -21,14 +25,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* Google AdSense */}
-        <meta name="google-adsense-account" content="ca-pub-8785007089566353" />
-        <script 
-          async 
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8785007089566353"
-          crossOrigin="anonymous"
-        ></script>
-
         {/* Tailwind CSS CDN */}
         <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
         
@@ -107,6 +103,15 @@ export default function RootLayout({
         `}} />
       </head>
       <body className={`${inter.variable} ${merriweather.variable} ${playfair.variable} text-slate-200 antialiased overflow-x-hidden bg-slate-950 flex flex-col min-h-screen`}>
+        {/* Google AdSense Script - Using next/script for better optimization */}
+        <Script 
+          id="adsense-init"
+          async 
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8785007089566353"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
+
         <div className="fixed inset-0 -z-50 w-full h-full bg-slate-950 overflow-hidden">
              {/* Gradient Orbs */}
             <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-emerald-600/20 blur-[100px] animate-blob mix-blend-screen" />
