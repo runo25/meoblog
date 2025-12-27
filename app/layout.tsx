@@ -103,13 +103,13 @@ export default function RootLayout({
         `}} />
       </head>
       <body className={`${inter.variable} ${merriweather.variable} ${playfair.variable} text-slate-200 antialiased overflow-x-hidden bg-slate-950 flex flex-col min-h-screen`}>
-        {/* Google AdSense Script - Using next/script for better optimization */}
+        {/* Google AdSense Script - Using strategy="beforeInteractive" to help verification */}
         <Script 
           id="adsense-init"
           async 
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8785007089566353"
           crossOrigin="anonymous"
-          strategy="afterInteractive"
+          strategy="beforeInteractive"
         />
 
         <div className="fixed inset-0 -z-50 w-full h-full bg-slate-950 overflow-hidden">
